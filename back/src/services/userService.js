@@ -45,6 +45,7 @@ class userAuthService {
         const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
         const token = jwt.sign({ user_id: user._id }, secretKey, { expiresIn: "2h" });
 
+        user
         const loginUser = {
             token,
             email,

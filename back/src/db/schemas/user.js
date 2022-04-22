@@ -19,8 +19,8 @@ const UserSchema = new Schema(
             required: true,
             trim: true,
         },
-        isMale: {
-            type: Boolean,
+        gender: {
+            type: String,
             required: true,
         },
         height: {
