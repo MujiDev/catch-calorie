@@ -3,7 +3,6 @@ import { login_required } from "../middlewares/login_required.js";
 import { userAuthService } from "../services/userService.js";
 import is from "@sindresorhus/is";
 
-
 const userAuthRouter = Router();
 
 userAuthRouter.post("/user/register", async function (req, res, next) {

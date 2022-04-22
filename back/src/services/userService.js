@@ -44,16 +44,15 @@ class userAuthService {
         //로그인 성공 시 JWT 웹 토큰 생성
         const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
         const token = jwt.sign({ user_id: user._id }, secretKey, { expiresIn: "2h" });
-
-        user
+        
         const loginUser = {
             token,
             email,
-            name,
-            gender,
-            height,
-            weight,
-            icon,
+            name: user.name,
+            gender: user.gender,
+            height: user.height,
+            weight: user.weight,
+            icon: user.icon,
             errorMessage: null,
         };
         return loginUser;
