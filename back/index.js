@@ -1,5 +1,5 @@
-import 'dotenv/config'
-import { app } from "./src/app.js";
+import "dotenv/config";
+import { app } from "./src/app";
 
 const URL = process.env.SERVER_URL || "http://localhost";
 const PORT = process.env.SERVER_PORT || 5000;

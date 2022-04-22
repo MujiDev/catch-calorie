@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 class userAuthService {
     static async addUser({ email, password, name, gender, height, weight, icon }) {
-        const user = await User.findOne({email});
+        const user = await User.findOne({ email });
         if (user) {
             const errorMessage = "현재 사용 중인 이메일입니다. 다른 이메일을 입력해주세요.";
             return { errorMessage };
@@ -13,7 +13,7 @@ class userAuthService {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = { 
+        const newUser = {
             email,
             password: hashedPassword,
             name,
@@ -42,9 +42,9 @@ class userAuthService {
         }
 
         //로그인 성공 시 JWT 웹 토큰 생성
-        const secretKey = process.env.JWT_SECRET_KEY || "secret-key"
-        const token = jwt.sign({ user_id: user._id }, secretKey, {expiresIn: "2h"});
-        
+        const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
+        const token = jwt.sign({ user_id: user._id }, secretKey, { expiresIn: "2h" });
+
         const loginUser = {
             token,
             email,
@@ -59,7 +59,7 @@ class userAuthService {
     }
 
     static async getUsers() {
-        return User.findAll()
+        return User.findAll();
     }
 
     //사용자 정보 조회 시
@@ -71,7 +71,6 @@ class userAuthService {
         }
         return user;
     }
-
 }
 
 export { userAuthService };

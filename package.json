@@ -1,0 +1,20 @@
+{
+    "name": "catch-calorie",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "back": "npm start --prefix back",
+        "front": "npm start --prefix front",
+        "start": "concurrently \"npm run back\" \"npm run front\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://kdt-gitlab.elice.io/ai_track/class_04/data_project/team13/catch-calorie.git"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "concurrently": "^7.1.0"
+    }
+}
