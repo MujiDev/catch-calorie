@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import schedule from "node-schedule";
+import swaggerUi from "swagger-ui-express";
+import swaggerJSDoc from "swagger-jsdoc";
 
 import { awardRouter } from "./routers/awardRouter";
 import { badgeRouter } from "./routers/badgeRouter";
@@ -14,6 +16,21 @@ import { errorMiddleware } from "./middlewares/errorMiddleware";
 import heatmap_scheduler from "./middlewares/heatmap_scheduler";
 
 const app = express();
+
+// Options for the swagger docs
+const options = {
+    swaggerDefinition: {
+        info: {
+            title: "Catch Calorie",
+            version: "1.0.0",
+            description: "Catch Calorie API Docs",
+        },
+        host: "elice-kdt-ai-4th-team13.elicecoding.com",
+        basePath: "/",
+    },
+    apis: ["./src/routers/*"],
+};
+const specs = swaggerJSDoc(options);
 
 // CORS 에러 방지
 app.use(cors());
@@ -38,6 +55,7 @@ app.use(exerRouter);
 app.use(foodRouter);
 app.use(heatmapRouter);
 app.use(trackingRouter);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 // 순서 중요 (router 에서 next() 시 아래의 에러 핸들링  middleware로 전달됨)
 app.use(errorMiddleware);

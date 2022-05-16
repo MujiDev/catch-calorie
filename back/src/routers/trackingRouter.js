@@ -7,7 +7,23 @@ const convert = configureMeasurements({ mass, length });
 
 const trackingRouter = Router();
 
-// 유저별 트래킹 정보를 보내는 요청
+/**
+ * @openapi
+ * /tracking/{user_id}:
+ *  get:
+ *    description: "유저별 트래킹 정보를 보내는 요청"
+ *    parameters:
+ *      - name: limit
+ *        in: params
+ *        description: "Limits the number of items on a page"
+ *        schema:
+ *          type: integer
+ *    responses:
+ *      200:
+ *        description: "Successfully returned a list of artists"
+ *        content:
+ *          application/json:
+ */
 trackingRouter.get("/tracking/:user_id", async (req, res, next) => {
     try {
         const { user_id } = req.params;

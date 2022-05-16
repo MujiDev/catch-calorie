@@ -22,7 +22,7 @@ db.once("open", async () => {
             const foods = trackings.map((tracking) => tracking.food_record).flat();
             const exers = trackings.map((tracking) => tracking.exer_record).flat();
             const days = trackings.map((tracking) => new Date(tracking.date).getTime() / (24 * 60 * 60 * 1000));
-            const categorys = await Promise.all(foods.map(async (food) => await Food.findByName({ name: food.name }).then((data) => data.category ?? null)));
+            const categorys = await Promise.all(foods.map(async (food) => await Food.findByName({ name: food.name }).then((data) => data?.category)));
 
             // ------------ EXERCISE COUNTING ------------
 
