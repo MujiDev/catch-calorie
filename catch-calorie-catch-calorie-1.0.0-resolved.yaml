@@ -1,0 +1,910 @@
+---
+openapi: 3.0.0
+info:
+  title: Catch Calorie
+  description: Catch Calorie API 명세서
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/catch-calorie/catch-calorie/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://localhost/5002
+  description: back server port number
+security:
+- bearerAuth:
+  - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjI2MjNhMWU1NGNhMGEwMmMzZTA0NDdjIiwiaWF0IjoxNjUwNjA0OTc5LCJleHAiOjE2NTA2MTIxNzl9.7Cvsm-wJhIyPa1SslJoZBbcAoMgLy8XORqrVtKmStTA
+tags:
+- name: User
+  description: Operations about user
+- name: Food
+  description: food's calories
+- name: Exercise
+  description: exercise's calories
+- name: Tracking
+  description: tracking down user's intake calories and burned calories
+- name: Heatmap
+- name: icon
+paths:
+  /users/register:
+    post:
+      tags:
+      - User
+      summary: 회원가입
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User-request'
+        required: true
+      responses:
+        "200":
+          description: register success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User-response'
+  /users/login:
+    post:
+      tags:
+      - User
+      summary: 로그인한 유저 정보 가져오기
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_login_body'
+        required: true
+      responses:
+        "200":
+          description: login success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User-response'
+  /users/{id}:
+    get:
+      tags:
+      - User
+      summary: 유저 아이디에 맞는 정보 반환
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the user to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+      security:
+      - bearerAuth:
+        - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjI2MjNhMWU1NGNhMGEwMmMzZTA0NDdjIiwiaWF0IjoxNjUwNjA0OTc5LCJleHAiOjE2NTA2MTIxNzl9.7Cvsm-wJhIyPa1SslJoZBbcAoMgLy8XORqrVtKmStTA
+    put:
+      tags:
+      - User
+      summary: 유저 정보 수정
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the user to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_id_body'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/users_id_body'
+      security:
+      - bearerAuth:
+        - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjI2MjNhMWU1NGNhMGEwMmMzZTA0NDdjIiwiaWF0IjoxNjUwNjA0OTc5LCJleHAiOjE2NTA2MTIxNzl9.7Cvsm-wJhIyPa1SslJoZBbcAoMgLy8XORqrVtKmStTA
+    delete:
+      tags:
+      - User
+      summary: 회원탈퇴
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the user to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+      security:
+      - bearerAuth:
+        - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjI2MjNhMWU1NGNhMGEwMmMzZTA0NDdjIiwiaWF0IjoxNjUwNjA0OTc5LCJleHAiOjE2NTA2MTIxNzl9.7Cvsm-wJhIyPa1SslJoZBbcAoMgLy8XORqrVtKmStTA
+  /users:
+    get:
+      tags:
+      - User
+      summary: 유저 전체 정보 가져오기
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Users'
+  /password/init:
+    put:
+      tags:
+      - User
+      summary: 임시 비밀번호로 유저 비밀번호 변경
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/password_init_body'
+        required: true
+      responses:
+        "201":
+          description: OK
+  /password:
+    put:
+      tags:
+      - User
+      summary: 직접 유저 비밀번호 변경
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/password_body'
+        required: true
+      responses:
+        "201":
+          description: OK
+  /foods:
+    get:
+      tags:
+      - Food
+      summary: 전체 음식 목록 가져오기
+      responses:
+        "200":
+          description: food name and calories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Food'
+    post:
+      tags:
+      - Food
+      summary: 새로운 음식 등록
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Food-add'
+        required: true
+      responses:
+        "200":
+          description: register success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Food'
+  /foods/{id}:
+    post:
+      tags:
+      - Food
+      summary: 음식 view 증가
+      parameters:
+      - name: id
+        in: path
+        description: 음식 아이디
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: register success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Food'
+  /exercises:
+    get:
+      tags:
+      - Exercise
+      summary: 전체 운동 목록 반환
+      responses:
+        "200":
+          description: The list of exercises
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exercise'
+    post:
+      tags:
+      - Exercise
+      summary: 새로운 운동 등록
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Exercise-add'
+        required: true
+      responses:
+        "200":
+          description: register success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exercise'
+  /exercises/{id}:
+    post:
+      tags:
+      - Exercise
+      summary: 운동 view 증가
+      parameters:
+      - name: id
+        in: path
+        description: 운동 아이디
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: register success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exercise'
+  /tracking/{userId}:
+    get:
+      tags:
+      - Tracking
+      summary: 메인 페이지 접속 시 로그인한 유저 정보
+      parameters:
+      - name: userId
+        in: path
+        description: User Id from DB
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Show accumulated calories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tracking'
+  /tracking/food:
+    put:
+      tags:
+      - Tracking
+      summary: 음식 기록 수정할 때
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tracking_food_body'
+        required: true
+      responses:
+        "200":
+          description: Show accumulated calories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tracking'
+    post:
+      tags:
+      - Tracking
+      summary: 음식 등록할 때
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tracking_food_body_1'
+        required: true
+      responses:
+        "200":
+          description: Show accumulated calories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tracking'
+    delete:
+      tags:
+      - Tracking
+      summary: 음식 기록 삭제할 때
+      responses:
+        "200":
+          description: Show accumulated calories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tracking'
+  /tracking/exer:
+    put:
+      tags:
+      - Tracking
+      summary: 운동 기록 수정할 때
+      responses:
+        "200":
+          description: Show accumulated calories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tracking'
+    post:
+      tags:
+      - Tracking
+      summary: 운동 등록할 때
+      responses:
+        "200":
+          description: Show accumulated calories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tracking'
+    delete:
+      tags:
+      - Tracking
+      summary: 운동 기록 삭제할 때
+      responses:
+        "200":
+          description: Show accumulated calories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tracking'
+  /heatmap/{user_id}:
+    get:
+      tags:
+      - Heatmap
+      summary: 사용자 별 Heatmap 정보 불러오기
+      parameters:
+      - name: user_id
+        in: path
+        description: User Id from DB
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Show accumulated calories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Heatmap'
+  /awards/{user_id}:
+    get:
+      tags:
+      - Award
+      summary: 사용자 별 뱃지 달성 여부 정보 불러오기
+      parameters:
+      - name: user_id
+        in: path
+        description: User Id from DB
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: 6268badf1997454004dcb848
+      responses:
+        "200":
+          description: award success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Award'
+  /badges:
+    get:
+      tags:
+      - Badge
+      summary: 전체 뱃지 정보 불러오기
+      responses:
+        "200":
+          description: award success
+          content:
+            application/json:
+              schema:
+                type: array
+                example:
+                - badge_name: basic I
+                  level: 1
+                  src: https://bucket-5ialfb.s3.ap-northeast-2.amazonaws.com/icon/first_badge_1.png
+                - badge_name: basic II
+                  level: 1
+                  src: https://bucket-5ialfb.s3.ap-northeast-2.amazonaws.com/icon/first_badge_2.png
+                - badge_name: basic II
+                  level: 1
+                  src: https://bucket-5ialfb.s3.ap-northeast-2.amazonaws.com/icon/first_badge_3.png
+                - badge_name: basic IV
+                  level: 1
+                  src: https://bucket-5ialfb.s3.ap-northeast-2.amazonaws.com/icon/first_badge_4.png
+                - badge_name: beginner
+                  award_name: athlete
+                  level: 1
+                  src: https://bucket-5ialfb.s3.ap-northeast-2.amazonaws.com/icon/beginner.png
+                  description: Do exercise over 5 times
+                - badge_name: newcomer
+                  award_name: athlete
+                  level: 2
+                  src: https://bucket-5ialfb.s3.ap-northeast-2.amazonaws.com/icon/newcomer.png
+                  description: Do exercise over 10 times
+                items:
+                  $ref: '#/components/schemas/inline_response_200_1'
+components:
+  schemas:
+    User-request:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test01@gmail.com
+        password:
+          type: string
+          example: "12345"
+        name:
+          type: string
+          example: 이름01
+        gender:
+          type: string
+          example: male
+        height:
+          type: number
+          example: 5.3
+        weight:
+          type: number
+          example: 120
+        unit:
+          type: string
+          example: us
+        open:
+          type: boolean
+          example: false
+        icon:
+          type: string
+          example: big_eater
+        status:
+          type: string
+          example: hello
+    User-response:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test01@gmail.com
+        password:
+          type: string
+          example: "12345"
+        name:
+          type: string
+          example: 이름01
+        gender:
+          type: string
+          example: male
+        height:
+          type: number
+          example: 160
+        weight:
+          type: number
+          example: 54
+        unit:
+          type: string
+          example: us
+        open:
+          type: boolean
+          example: false
+        icon:
+          type: string
+          example: big_eater
+        status:
+          type: string
+          example: hello
+    Users:
+      type: array
+      example:
+      - email: test123@gmail.com
+        password: $2b$10$x4HHT3zhBFb26WYIWZqXtuUHPWhEN0o0ApTPauczLBL98Vwy.ySVu
+        name: 이름111
+        gender: female
+        height: 155
+        weight: 155
+        unit: non_us
+        open: true
+        icon: runner
+        status: hello
+      - email: test01@gmail.com
+        password: $2b$10$l8Aess4ctP9/9rZ.US3xKOWNDqacX0d6CVlsa1Jl3B1.KH7V1g3P.
+        name: 이름010101
+        gender: female
+        height: 120
+        weight: 120
+        unit: non_us
+        open: true
+        status: hello world!!!
+        icon: yoga
+      - email: test02@gmail.com
+        password: $2b$10$9UILDIsYtvaSj440j66Bi.tMQDwpgD9VTVv.RKvv5RUrR8bIKu9Rq
+        name: 이름02
+        gender: female
+        height: 190
+        weight: 50
+        unit: non_us
+        open: true
+        icon: all-rounder
+        status: 설명이 아직 없습니다. 추가!
+      - email: test03@gmail.com
+        password: $2b$10$P32S67ck5eThDM7o7fKOWeKkLIA4hetq9GsvcZryDgI9rpQlyeqF2
+        name: 이름03
+        gender: male
+        height: 140
+        weight: 40
+        unit: non_us
+        open: true
+        icon: all-rounder
+        status: 설명이 아직 없어
+      - email: test05@gmail.com
+        password: $2b$10$ldWSEiXPBqQbmK30I4PhoOgrXePmKH4aqsHBc1wkSPO.QWlVzTVS2
+        name: 이름01
+        gender: female
+        height: 162
+        weight: 54
+        unit: us
+        open: false
+        icon: big_eater
+        status: hi bye may
+      items:
+        $ref: '#/components/schemas/Users_inner'
+    Food:
+      type: object
+      properties:
+        category:
+          type: string
+          example: CannedFruit
+        name:
+          type: string
+          example: Applesauce
+        kcal_per100g:
+          type: number
+          example: 62
+        kcal_perlb:
+          type: number
+          example: 2
+        views:
+          type: number
+          example: 0
+    Food-add:
+      type: object
+      properties:
+        category:
+          type: string
+          example: Fruits
+        name:
+          type: string
+          example: Berry Berry Strawberry
+        kcal:
+          type: number
+          example: 70
+        unit:
+          type: string
+          example: gram
+          enum:
+          - gram
+          - pound
+    Exercise:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Cycling, mountain bike, bmx
+        kcal_per_lb:
+          type: number
+          example: 1.75
+        kcal_per_kg:
+          type: number
+          example: 3.85
+        views:
+          type: number
+          example: 0
+    Exercise-add:
+      type: object
+      properties:
+        name:
+          type: string
+          example: American Football
+        kcal:
+          type: number
+          example: 2.2
+        unit:
+          type: string
+          example: kilogram
+          enum:
+          - kilogram
+          - pound
+    Tracking:
+      type: object
+      properties:
+        user_id:
+          type: string
+          example: 6260310b4d722e533e70e419
+        food_record:
+          $ref: '#/components/schemas/Tracking_food_record'
+        exer_record:
+          $ref: '#/components/schemas/Tracking_exer_record'
+        acc_cal:
+          type: number
+          example: 1116
+        rec_cal:
+          type: number
+          example: 1500
+        rec_date:
+          type: string
+    Heatmap:
+      type: object
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        record:
+          type: array
+          items:
+            $ref: '#/components/schemas/Heatmap_record'
+    Award:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6268badf1997454004dcb848
+        user_id:
+          type: string
+          example: 6268badf1997454004dcb848
+        athlete:
+          type: number
+          example: 3
+        runner:
+          type: number
+          example: 1
+        climber:
+          type: number
+          example: 0
+        swimmer:
+          type: number
+          example: 0
+        gym_rat:
+          type: number
+          example: 2
+        smasher:
+          type: number
+          example: 0
+        protainer:
+          type: number
+          example: 1
+        fruits_lover:
+          type: number
+          example: 3
+        vegetables_lover:
+          type: number
+          example: 1
+        yogurt_lover:
+          type: number
+          example: 0
+        meat_lover:
+          type: number
+          example: 0
+        candy_lover:
+          type: number
+          example: 0
+        gourmand:
+          type: number
+          example: 0
+        visitor:
+          type: number
+          example: 0
+    users_login_body:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test01@test.com
+        password:
+          type: string
+          example: "1234"
+    inline_response_200:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 이름01
+        gender:
+          type: string
+          example: female
+        height:
+          type: number
+          example: 160
+        weight:
+          type: number
+          example: 54
+        unit:
+          type: string
+          example: non_us
+        open:
+          type: boolean
+          example: false
+        icon:
+          type: string
+          example: rookie_1
+        status:
+          type: string
+          example: hi bye may
+    users_id_body:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 이름01
+        gender:
+          type: string
+          example: female
+        height:
+          type: number
+          example: 160
+        weight:
+          type: number
+          example: 54
+        unit:
+          type: string
+          example: non_us
+        open:
+          type: boolean
+          example: false
+        icon:
+          type: string
+          example: rookie_1
+        status:
+          type: string
+          example: hi bye may
+    password_init_body:
+      properties:
+        email:
+          type: string
+          example: test01@test.com
+    password_body:
+      properties:
+        old_password:
+          type: string
+          example: "1234"
+        new_password:
+          type: string
+          example: "5678"
+    tracking_food_body:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Orange
+        weight:
+          type: number
+          example: 80
+        unit:
+          type: string
+          example: us
+    tracking_food_body_1:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Orange
+        weight:
+          type: number
+          example: 35
+        unit:
+          type: string
+          example: us
+    inline_response_200_1:
+      type: object
+      properties:
+        badge_name:
+          type: string
+        award_name:
+          type: string
+        level:
+          type: number
+        src:
+          type: string
+        description:
+          type: number
+    Users_inner:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        gender:
+          type: string
+        height:
+          type: number
+        weight:
+          type: number
+        unit:
+          type: string
+        open:
+          type: boolean
+        icon:
+          type: string
+        status:
+          type: string
+    Tracking_food_record:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+          example: Chicken
+        weight:
+          type: number
+          example: 300
+        unit:
+          type: string
+          example: gram
+        calorie:
+          type: number
+          example: 657
+      example: null
+    Tracking_exer_record:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+          example: Skiing
+        minute:
+          type: number
+          example: 120
+        calorie:
+          type: number
+          example: 198
+      example: null
+    Heatmap_record:
+      type: object
+      properties:
+        value:
+          type: number
+          example: -198
+        date:
+          type: string
+          example: 2022-04-27
+      example: null
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
