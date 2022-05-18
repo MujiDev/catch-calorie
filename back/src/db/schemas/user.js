@@ -2,6 +2,11 @@ import pkg from "mongoose";
 
 const { Schema, model } = pkg;
 
+/**
+ * @swagger
+ * 
+ */
+
 const UserSchema = new Schema({
     email: {
         type: String,

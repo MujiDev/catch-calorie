@@ -11,6 +11,26 @@ import configureMeasurements, { mass, length } from "convert-units";
 const convert = configureMeasurements({ mass, length });
 
 const userRouter = Router();
+/**
+ * @swagger
+ * /users/register:
+ * post:
+ *    tags: [User]
+ *    summary: 회원가입
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/User-request'
+ *      required: true
+ *    responses:
+ *      200:
+ *        description: register success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/User-response' 
+ */
 
 // 회원가입
 userRouter.post("/users/register", async (req, res, next) => {

@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import schedule from "node-schedule";
-import swaggerUi from "swagger-ui-express";
-import swaggerJSDoc from "swagger-jsdoc";
+// import swaggerUi from "swagger-ui-express";
+// import swaggerJSDoc from "swagger-jsdoc";
 
 import { awardRouter } from "./routers/awardRouter";
 import { badgeRouter } from "./routers/badgeRouter";
@@ -15,22 +15,24 @@ import { userRouter } from "./routers/userRouter";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
 import heatmap_scheduler from "./middlewares/heatmap_scheduler";
 
+import { swaggerUi, specs } from "./swagger.js";
+
 const app = express();
 
 // Options for the swagger docs
-const options = {
-    swaggerDefinition: {
-        info: {
-            title: "Catch Calorie",
-            version: "1.0.0",
-            description: "Catch Calorie API Docs",
-        },
-        host: "elice-kdt-ai-4th-team13.elicecoding.com",
-        basePath: "/",
-    },
-    apis: ["./src/routers/*"],
-};
-const specs = swaggerJSDoc(options);
+// const options = {
+//     swaggerDefinition: {
+//         info: {
+//             title: "Catch Calorie",
+//             version: "1.0.0",
+//             description: "Catch Calorie API Docs",
+//         },
+//         host: "elice-kdt-ai-4th-team13.elicecoding.com",
+//         basePath: "/",
+//     },
+//     apis: ["./src/routers/*"],
+// };
+// const specs = swaggerJSDoc(options);
 
 // CORS 에러 방지
 app.use(cors());
